@@ -7,11 +7,8 @@ class Message extends Component {
       return (
         <div>
           <div className="message">
-            <span className="message-username">Anonymous1</span>
-            <span className="message-content">I won't be impressed with technology until I can download food.</span>
-          </div>
-          <div className="message system">
-            Anonymous1 changed their name to nomnom.
+            <span className="message-username">{this.props.message.username}</span>
+            <span className="message-content">{this.props.message.content}}</span>
           </div>
         </div>
     );
@@ -20,3 +17,29 @@ class Message extends Component {
 }
 
 export default Message;
+
+
+// {
+//   currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
+//   messages: [
+//     {
+//       username: "Bob",
+//       content: "Has anyone seen my marbles?",
+//     },
+//     {
+//       username: "Anonymous",
+//       content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
+//     }
+//   ]
+// }
+
+
+// <div>
+// <div className="message">
+//   <span className="message-username">{this.props.message.username}</span>
+//   <span className="message-content">{this.props.message.content}}</span>
+// </div>
+// <div className="message system">
+//   Anonymous1 changed their name to nomnom.
+// </div>
+// </div>

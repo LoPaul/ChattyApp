@@ -34,6 +34,11 @@ body {
   padding: 0 9px;
 }
 
+form {
+  display: flex;
+  flex: 1;
+}
+
 .chatbar-message {
   flex: 8;
 }
