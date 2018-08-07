@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
+import MessageList from './MessageList.jsx'
+import ChatBar from './ChatBar.jsx'
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {loading: true};
-  }
+
   render() {
     return (
-      <h1>Hello React :)</h1>
+      <div>
+        <MessageList />
+        <ChatBar />
+      </div>
     );
   }
 }
+
 export default App;
