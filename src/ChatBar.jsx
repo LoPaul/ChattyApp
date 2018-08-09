@@ -8,18 +8,16 @@ class ChatBar extends Component {
       this.props.addMessage(event.target.elements.username.value, event.target.elements.message.value)
       event.target.elements.message.value = "";
     };
-
-      return (
-        <footer className="chatbar">
-          <form onSubmit={onSubmit}>
-            <input name="username" className="chatbar-username" defaultValue={this.props.currentUserName} placeholder="Your Name (Optional)"  />
-            <input name="message" className="chatbar-message" placeholder="Type a message and hit ENTER" />
-            <input style={{display: "none"}} type="submit" />
-          </form>
-        </footer>
-        );
+    return (
+      <footer className="chatbar">
+        <form onSubmit={onSubmit}>
+          <input name="username" className="chatbar-username" defaultValue={this.props.currentUserName} placeholder="Your Name (Optional)"  />
+          <input name="message" className="chatbar-message" placeholder="Type a message and hit ENTER" />
+          <input style={{display: "none"}} type="submit" />
+        </form>
+      </footer>
+      );
   }
-
 }
 
 export default ChatBar

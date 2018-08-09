@@ -1,5 +1,4 @@
 // server.js
-
 const express = require('express');
 const SocketServer = require('ws').Server;
 
@@ -30,64 +29,50 @@ wss.on('connection', (ws) => {
 });
 
 function initialClientConnection(client) {
+  // send initial data to client for message history and default color
   client.send(JSON.stringify({type: "incomingAllMessages", content: messageHistory}));
   client.send(JSON.stringify({type: "incomingDefaultColor", content: colors[wss.clients.size]}));
 }
 
 function broadcastConnectionCount() {
+  // broadcast to client current user count / connections
   var count = wss.clients.size;
-  console.log("client count", wss.clients.size);
   var message = { type: "IncomingUserNotifiation", userCount: count};
   wss.clients.forEach(function each(client) {
-    if (client.readyState === WebSocket.OPEN)  { //&& client !== ws )
+    if (client.readyState === WebSocket.OPEN)  {
       client.send(JSON.stringify(message));
     }
   })
 }
 
-
-
-var colors = ["red", "gray", "green", "glue"];
+var colors = ["red", "gray", "green", "purple"];
 var messageHistory = [];
+
 const WebSocket = require('ws');
-// Broadcast to all.
-// wss.broadcast = function broadcast(data) {
-//   wss.clients.forEach(function each(client) {
-//     if (client.readyState === WebSocket.OPEN) {
-//       client.send(data);
-//     console.log(data)
-//     }
-//   });
-// };
 
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(data) {
-    // Broadcast to everyone else.
+    // Broadcast to everyone messages send by client
     var outMessage = responseForIncomingMessage(JSON.parse(data));
     wss.clients.forEach(function each(client) {
       if (client.readyState === WebSocket.OPEN)  { //&& client !== ws )
         client.send(JSON.stringify(outMessage));
-
-        console.log("Message", outMessage)
       }
     });
   });
 });
 
 function responseForIncomingMessage(msg) {
-  if(msg.type === "postMessage") {
+  // compose response based on incoming message
+  if(msg.type === "postMessage" || msg.type === "postNotification") {
     msg.id = generateRandomId();
     msg.type = "incomingMessage"
-  }
-  if(msg.type === "postNotification") {
-    msg.id = generateRandomId();
-    msg.type = "incomingNotification";
   }
   messageHistory.push(msg);
   return msg
 }
 
-
+// random ID generator
 const generateRandomId = (alphabet => {
   const alphabetLength = alphabet.length;
   const randoIter = (key, n) => {
