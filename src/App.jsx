@@ -26,13 +26,13 @@ class App extends Component {
     console.log("OldUsername", oldUsername);
     console.log("NewUsername", userName)
     var nameChanged = oldUsername !== userName;
-    const newMessage = {username: userName, content: message};
+
     if(nameChanged) {
       this.state.currentUser = {name: userName}
       this.socketSend("postNotification", {content: `***${oldUsername}** changed their name to **${userName}**`});
     }
     if(message) {
-      // newState.messages = [...this.state.messages, newMessage];
+      const newMessage = {color: this.state.color, username: userName, content: message};
       this.socketSend("postMessage", newMessage)
     }
   }
@@ -43,6 +43,12 @@ class App extends Component {
     console.log("Current State", this.state)
     console.log("Incoming Message", message)
     
+    if(message.type === "incomingAllMessages") {
+      newState.messages = message.content;
+    }
+    if(message.type === "incomingDefaultColor") {
+      newState.color = message.content;
+    }
     if(message.type === "IncomingUserNotifiation") {
       newState.userCount = message.userCount;
     }

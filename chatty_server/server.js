@@ -21,6 +21,7 @@ const wss = new SocketServer({ server });
 wss.on('connection', (ws) => {
   console.log('Client connected');
   broadcastConnectionCount();
+  initialClientConnection(ws);
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => {
       console.log('Client disconnected');
@@ -28,6 +29,10 @@ wss.on('connection', (ws) => {
     });
 });
 
+function initialClientConnection(client) {
+  client.send(JSON.stringify({type: "incomingAllMessages", content: messageHistory}));
+  client.send(JSON.stringify({type: "incomingDefaultColor", content: colors[wss.clients.size]}));
+}
 
 function broadcastConnectionCount() {
   var count = wss.clients.size;
@@ -42,7 +47,8 @@ function broadcastConnectionCount() {
 
 
 
-
+var colors = ["red", "gray", "green", "glue"];
+var messageHistory = [];
 const WebSocket = require('ws');
 // Broadcast to all.
 // wss.broadcast = function broadcast(data) {
@@ -72,13 +78,13 @@ function responseForIncomingMessage(msg) {
   if(msg.type === "postMessage") {
     msg.id = generateRandomId();
     msg.type = "incomingMessage"
-    return msg
   }
   if(msg.type === "postNotification") {
     msg.id = generateRandomId();
     msg.type = "incomingNotification";
-    return msg
   }
+  messageHistory.push(msg);
+  return msg
 }
 
 
