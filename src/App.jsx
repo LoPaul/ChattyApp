@@ -1,56 +1,93 @@
 import React, {Component} from 'react';
 import MessageList from './MessageList.jsx'
 import ChatBar from './ChatBar.jsx'
+import NavBar from './NavBar.jsx'
 
 class App extends Component {
   // Set initial state so the component is initially "loading"
   constructor(props) {
     super(props);
     // this is the *only* time you should assign directly to state:
-    this.state = {loading: true};
-    this.addNewMessage = this.addNewMessage.bind(this);
+    this.state = {
+      userCount: 1,
+      currentUser: {name: "Bob"},
+      messages: [] };
+    this.addMessage = this.addMessage.bind(this);
   }
-  addNewMessage(userName, message) {
+  socketSend(notificationType, jsonMsg) {
+    jsonMsg.type = notificationType;
+    console.log("Send", jsonMsg)
+    this.socket.send(JSON.stringify(jsonMsg))
+  }
+  addMessage(userName, message) {
+    console.log(userName, message)
     const newState = this.state;
-    newState.messages = [...this.state.messages, {username: userName, content: message, id: generateRandomId()}];
-    this.setState(newState)
+    var oldUsername = this.state.currentUser.name;
+    console.log("OldUsername", oldUsername);
+    console.log("NewUsername", userName)
+    var nameChanged = oldUsername !== userName;
+    const newMessage = {username: userName, content: message};
+    if(nameChanged) {
+      this.state.currentUser = {name: userName}
+      this.socketSend("postNotification", {content: `***${oldUsername}** changed their name to **${userName}**`});
+    }
+    if(message) {
+      // newState.messages = [...this.state.messages, newMessage];
+      this.socketSend("postMessage", newMessage)
+    }
+  }
+  processIncomingMessage(data) {
+    var newState = this.state;
+    console.log("incoming message", data)
+    var message = JSON.parse(data);
+    console.log("Current State", this.state)
+    console.log("Incoming Message", message)
+    
+    if(message.type === "IncomingUserNotifiation") {
+      newState.userCount = message.userCount;
+    }
+
+    if(!this.state.messages.some(each => each.type === message.type && each.id === message.id)) {
+      console.log("state messages", this.state.messages);
+      console.log("incoming message", message)
+        // const newMessage = {id: message.id, username: message.username, content: message.content};
+        newState.messages = [...this.state.messages, message];
+    }
+    console.log("NewState", newState)
+    this.setState(newState);
   }
   componentDidMount() {
-    const newState = 
-            {
-              loading: false,
-              currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
-              messages: [
-                {
-                  username: "Bob",
-                  content: "Has anyone seen my marbles?",
-                },
-                {
-                  username: "Anonymous",
-                  content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-                }
-              ]
-            };
-      newState.messages = newState.messages.map(message => {
+    this.socket = new WebSocket("ws://127.0.0.1:3001")
+
+    this.socket.onopen = (ev) => {
+      console.log("Connected to server!");
+      this.socket.onmessage = (ev) => {
+        // const newState = this.state;
+        // newState.messages = [...this.state.messages, JSON.parse(ev.data)];
+        // this.setState(newState);
+        this.processIncomingMessage(ev.data)
+      }
+    }
+
+    const newState = this.state;
+        newState.messages = newState.messages.map(message => {
         message.id = generateRandomId();
         return message
       })
       this.setState(newState); 
-      
+      console.log(newState)
   }
 
   render() {
-    if (this.state.loading) {
-      return <h1>Loading...</h1>
-    } else {
-      var currentUserName = this.state.currentUser ? this.state.currentUser.name : undefined;
       return (
         <div>
-          <MessageList messages={this.state.messages}/>
-          <ChatBar addNewMessage={this.addNewMessage} username={currentUserName}/>
+          <NavBar userCount={this.state.userCount} />
+          <div>
+            <MessageList messages={this.state.messages}/>
+            <ChatBar addMessage={this.addMessage} currentUserName={this.state.currentUser.name}/>
+          </div>
         </div>
       );
-    }
   }
 }
 
@@ -69,19 +106,3 @@ const generateRandomId = (alphabet => {
 
 
 export default App;
-
-// {
-//   loading: false,
-//   currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
-//   messages: [
-//     {
-//       username: "Bob",
-//       content: "Has anyone seen my marbles?",
-//     },
-//     {
-//       username: "Anonymous",
-//       content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-//     }
-//   ]
-// }
-
