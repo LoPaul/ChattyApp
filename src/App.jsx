@@ -24,8 +24,8 @@ class App extends Component {
     var nameChanged = oldUsername !== userName;
 
     if(nameChanged) {
-      this.state.currentUser = {name: userName}
-      this.socketSend("postNotification", {content: `**${oldUsername}** changed their name to **${userName}**`});
+      this.state.currentUser.name = userName
+      this.socketSend("postNotification", {currentUser: this.state.currentUser, content: `**${oldUsername}** changed their name to **${userName}**`});
     }
     if(message) {
       const newMessage = {color: this.state.color, username: userName, content: message};
@@ -35,6 +35,9 @@ class App extends Component {
   processIncomingMessage(data) {
     var newState = this.state;
     var message = JSON.parse(data);
+    if(message.type === "incomingUserSetup") {
+      newState.currentUser = message.content;
+    }
     if(message.type === "incomingAllMessages") {
       newState.messages = message.content;
     }
@@ -44,8 +47,10 @@ class App extends Component {
     if(message.type === "IncomingUserNotifiation") {
       newState.userCount = message.userCount;
     }
-    if((message.type === "incomingMessage" || message.type == "incomingNotification") &&
-      (!this.state.messages.some(each => each.type === message.type && each.id === message.id))) {
+    if((message.type === "incomingMessage" || message.type === "incomingNotification" || 
+      message.type === "IncomingSessionTerminationNotification" || 
+      message.type === "IncomingSessionConnectionNotification")
+      && (!this.state.messages.some(each => each.type === message.type && each.id === message.id))) {
         newState.messages = [...this.state.messages, message];
       }
     this.setState(newState);

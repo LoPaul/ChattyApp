@@ -23,30 +23,61 @@ wss.on('connection', (ws) => {
   initialClientConnection(ws);
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => {
-      console.log('Client disconnected');
       broadcastConnectionCount();
+      broadcastDisconnect(ws);
     });
 });
 
+var colors = ["red", "gray", "green", "purple"];
+var messageHistory = [];
+var sessionUsers = [];
+
+function broadcastMessaeg(message) {
+  wss.clients.forEach(function each(client) {
+     if (client.readyState === WebSocket.OPEN)  {
+       client.send(JSON.stringify(message));
+     }
+   })
+ }
+
 function initialClientConnection(client) {
   // send initial data to client for message history and default color
+  const username = "Bob";
+  const userID = generateRandomId();
+  const connectionMessage = {id: generateRandomId(), type: "IncomingSessionConnectionNotification", content: `${username} has connected`};
+  sessionUsers.push({client: client, userID: userID, name: username});
+  client.send(JSON.stringify({type: "incomingUserSetup", content: {userID: userID, name: username}}));
   client.send(JSON.stringify({type: "incomingAllMessages", content: messageHistory}));
   client.send(JSON.stringify({type: "incomingDefaultColor", content: colors[wss.clients.size]}));
+  broadcastMessaeg(connectionMessage);
+  messageHistory.push(connectionMessage);
 }
 
 function broadcastConnectionCount() {
+  broadcastMessaeg({ type: "IncomingUserNotifiation", userCount: wss.clients.size});
+}
+
+function usernameFor(client) {
+  const sessionUser = sessionUsers.find((sessionUser) => sessionUser.client === client);
+  return sessionUser ? sessionUser.name : "<Unknown User>"
+}
+
+function broadcastDisconnect(client) {
   // broadcast to client current user count / connections
-  var count = wss.clients.size;
-  var message = { type: "IncomingUserNotifiation", userCount: count};
-  wss.clients.forEach(function each(client) {
-    if (client.readyState === WebSocket.OPEN)  {
-      client.send(JSON.stringify(message));
+  console.log("broadcasting disconnect")
+  let username = usernameFor(client);
+  var disconnectMessage = {id: generateRandomId(), type: "IncomingSessionTerminationNotification", content: `${username} has disconnected`};
+  var userCountMessage = {type: "IncomingUserNotifiation", userCount: wss.clients.size};
+  messageHistory.push(disconnectMessage);
+  wss.clients.forEach(function each(aClient) {
+    if (aClient.readyState === WebSocket.OPEN)  {
+      aClient.send(JSON.stringify(disconnectMessage));
+      aClient.send(JSON.stringify(userCountMessage));
     }
   })
 }
 
-var colors = ["red", "gray", "green", "purple"];
-var messageHistory = [];
+
 
 const WebSocket = require('ws');
 
@@ -64,6 +95,12 @@ wss.on('connection', function connection(ws) {
 
 function responseForIncomingMessage(msg) {
   // compose response based on incoming message
+  if(msg.type === "postNotification")
+    sessionUsers.forEach((sessionUser) => {
+      if(sessionUser.userID === msg.currentUser.userID) {
+        sessionUser.name = msg.currentUser.name
+      }
+    } )
   if(msg.type === "postMessage" || msg.type === "postNotification") {
     msg.id = generateRandomId();
     msg.type = "incomingMessage"

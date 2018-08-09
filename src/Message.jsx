@@ -11,7 +11,9 @@ class Message extends Component {
                   <span className="message-content">{this.props.message.content}</span>
                   </div>  );
         }
-    if(messageType === "incomingNotification") {
+    if(messageType === "incomingNotification" || 
+        messageType === "IncomingSessionTerminationNotification" ||
+        messageType === "IncomingSessionConnectionNotification") {
       var notificationComp = 
           (<div className="message system">
             {this.props.message.content}
