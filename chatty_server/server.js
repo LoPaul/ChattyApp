@@ -15,8 +15,6 @@ const server = express()
 const wss = new SocketServer({ server });
 
 // Set up a callback that will run when a client connects to the server
-// When a client connects they are assigned a socket, represented by
-// the ws parameter in the callback.
 wss.on('connection', (ws) => {
   console.log('Client connected');
   broadcastConnectionCount();
@@ -31,7 +29,6 @@ wss.on('connection', (ws) => {
 var colors = ["red", "gray", "green", "purple"];
 var messageHistory = [];
 var sessionUsers = [];
-
 function broadcastMessaeg(message) {
   wss.clients.forEach(function each(client) {
      if (client.readyState === WebSocket.OPEN)  {
@@ -40,15 +37,16 @@ function broadcastMessaeg(message) {
    })
  }
 
+// Initialize client by sending data upon client socket connection
 function initialClientConnection(client) {
   // send initial data to client for message history and default color
-  const username = "Bob";
+  const username = "Anonymous100" + wss.clients.size;
   const userID = generateRandomId();
   const connectionMessage = {id: generateRandomId(), type: "IncomingSessionConnectionNotification", content: `${username} has connected`};
   sessionUsers.push({client: client, userID: userID, name: username});
   client.send(JSON.stringify({type: "incomingUserSetup", content: {userID: userID, name: username}}));
-  client.send(JSON.stringify({type: "incomingAllMessages", content: messageHistory}));
-  client.send(JSON.stringify({type: "incomingDefaultColor", content: colors[wss.clients.size]}));
+  client.send(JSON.stringify({type: "incomingAllMessages", content: []}));
+  client.send(JSON.stringify({type: "incomingDefaultColor", content: colors[wss.clients.size % colors.length]}));
   broadcastMessaeg(connectionMessage);
   messageHistory.push(connectionMessage);
 }
@@ -62,6 +60,7 @@ function usernameFor(client) {
   return sessionUser ? sessionUser.name : "<Unknown User>"
 }
 
+// broadcast disconnect to other users
 function broadcastDisconnect(client) {
   // broadcast to client current user count / connections
   console.log("broadcasting disconnect")
@@ -77,10 +76,7 @@ function broadcastDisconnect(client) {
   })
 }
 
-
-
 const WebSocket = require('ws');
-
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(data) {
     // Broadcast to everyone messages send by client
@@ -100,11 +96,12 @@ function responseForIncomingMessage(msg) {
       if(sessionUser.userID === msg.currentUser.userID) {
         sessionUser.name = msg.currentUser.name
       }
-    } )
-  if(msg.type === "postMessage" || msg.type === "postNotification") {
-    msg.id = generateRandomId();
+    } );
+  msg.id = generateRandomId();
+  if(msg.type === "postMessage")
     msg.type = "incomingMessage"
-  }
+  if(msg.type === "postNotification")
+    msg.type = "incomingNotification"
   messageHistory.push(msg);
   return msg
 }

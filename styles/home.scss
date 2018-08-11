@@ -34,6 +34,354 @@ body {
   padding: 0 9px;
 }
 
+.notify-message {
+  padding-top: 8px;
+}
+.speech-bubble {
+  position: relative;
+  margin: 0 20%;
+  height: 30px;
+	background: #ecda16;
+	border-radius: .4em;
+}
+
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	width: 0;
+	height: 0;
+	border: 2px solid transparent;
+	border-top-color: #ecda16;
+	border-bottom: 0;
+	border-left: 0;
+	margin-left: -1px;
+	margin-bottom: -2px;
+}
+/////////////////////////////
+/* creates the larger triangle */
+.triangle-border {
+  position:relative;
+  padding:15px;
+  margin:1em 0 3em;
+  border:5px solid #5a8f00;
+  color:#333;
+  background:#fff;
+  /* css3 */
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+}
+/* creates the larger triangle */
+.triangle-border.left:before {
+  top:10px; /* controls vertical position */
+  bottom:auto;
+  left:-30px; /* value = - border-left-width - border-right-width */
+  border-width:15px 30px 15px 0;
+  border-color:transparent #5a8f00;
+}
+
+/* creates the smaller  triangle */
+.triangle-border.left:after {
+  top:16px; /* value = (:before top) + (:before border-top) - (:after border-top) */
+  bottom:auto;
+  left:-21px; /* value = - border-left-width - border-right-width */
+  border-width:9px 21px 9px 0;
+  border-color:transparent #fff;
+}
+/* creates the smaller  triangle */
+.triangle-border:after {
+  content:"";
+  position:absolute;
+  bottom:-13px; /* value = - border-top-width - border-bottom-width */
+  left:47px; /* value = (:before left) + (:before border-left) - (:after border-left) */
+  border-width:13px 13px 0;
+  border-style:solid;
+  border-color:#fff transparent;
+  /* reduce the damage in FF3.0 */
+  display:block;
+  width:0;
+}
+/////////////////////////////
+.triangle-right-purple {
+  position:relative;
+  padding:15px;
+  margin-right: 50%;
+  margin-left: 20px;
+  margin-bottom: 3em;
+  /* margin:1em 0 3em; */
+  color: #fff;
+  //background:#075698; /* default background for browsers without gradient support */
+  /* css3 */
+  background: purple;
+  // background:-webkit-gradient(linear, 0 0, 0 100%, from(#2e88c4), to(#075698));
+  // background:-moz-linear-gradient(#2e88c4, #075698);
+  // background:-o-linear-gradient(#2e88c4, #075698);
+  // background:linear-gradient(#2e88c4, #075698);
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+}
+.triangle-right-purple:after {
+  content:"";
+
+  position:absolute;
+  bottom:-20px; /* value = - border-top-width - border-bottom-width */
+  left:50px; /* controls horizontal position */
+  border-width: 20px 0 0 20px;  /* vary these values to change the angle of the vertex */
+  border-style:solid;
+//  border-color:#075698 transparent;
+  border-color: purple transparent;
+  /* reduce the damage in FF3.0 */
+  display:block;
+  width:0;
+}
+
+.triangle-right-green {
+  position:relative;
+  padding:15px;
+  margin-right: 50%;
+  margin-left: 20px;
+  margin-bottom: 3em;
+  /* margin:1em 0 3em; */
+  color:#fff;
+  //background:#075698; /* default background for browsers without gradient support */
+  /* css3 */
+  background: green;
+  // background:-webkit-gradient(linear, 0 0, 0 100%, from(#2e88c4), to(#075698));
+  // background:-moz-linear-gradient(#2e88c4, #075698);
+  // background:-o-linear-gradient(#2e88c4, #075698);
+  // background:linear-gradient(#2e88c4, #075698);
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+}
+.triangle-right-green:after {
+  content:"";
+
+  position:absolute;
+  bottom:-20px; /* value = - border-top-width - border-bottom-width */
+  left:50px; /* controls horizontal position */
+  border-width: 20px 0 0 20px;  /* vary these values to change the angle of the vertex */
+  border-style:solid;
+//  border-color:#075698 transparent;
+  border-color: green transparent;
+  /* reduce the damage in FF3.0 */
+  display:block;
+  width:0;
+}
+
+.triangle-right-gray {
+  position:relative;
+  padding:15px;
+  margin-right: 50%;
+  margin-left: 20px;
+  margin-bottom: 3em;
+  /* margin:1em 0 3em; */
+  color: #fff;
+  //background:#075698; /* default background for browsers without gradient support */
+  /* css3 */
+  background: gray;
+  // background:-webkit-gradient(linear, 0 0, 0 100%, from(#2e88c4), to(#075698));
+  // background:-moz-linear-gradient(#2e88c4, #075698);
+  // background:-o-linear-gradient(#2e88c4, #075698);
+  // background:linear-gradient(#2e88c4, #075698);
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+}
+.triangle-right-gray:after {
+  content:"";
+
+  position:absolute;
+  bottom:-20px; /* value = - border-top-width - border-bottom-width */
+  left:50px; /* controls horizontal position */
+  border-width: 20px 0 0 20px;  /* vary these values to change the angle of the vertex */
+  border-style:solid;
+//  border-color:#075698 transparent;
+  border-color: gray transparent;
+  /* reduce the damage in FF3.0 */
+  display:block;
+  width:0;
+}
+
+.triangle-right-red {
+  position:relative;
+  padding:15px;
+  margin-right: 50%;
+  margin-left: 20px;
+  margin-bottom: 3em;
+  /* margin:1em 0 3em; */
+  color:#fff;
+  //background:#075698; /* default background for browsers without gradient support */
+  /* css3 */
+  background: red;
+  // background:-webkit-gradient(linear, 0 0, 0 100%, from(#2e88c4), to(#075698));
+  // background:-moz-linear-gradient(#2e88c4, #075698);
+  // background:-o-linear-gradient(#2e88c4, #075698);
+  // background:linear-gradient(#2e88c4, #075698);
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+}
+.triangle-right-red:after {
+  content:"";
+
+  position:absolute;
+  bottom:-20px; /* value = - border-top-width - border-bottom-width */
+  left:50px; /* controls horizontal position */
+  border-width: 20px 0 0 20px;  /* vary these values to change the angle of the vertex */
+  border-style:solid;
+//  border-color:#075698 transparent;
+  border-color: red transparent;
+  /* reduce the damage in FF3.0 */
+  display:block;
+  width:0;
+}
+
+//////////////////////////////////////
+
+///////////////////////////////
+.triangle-left-purple {
+  position:relative;
+  padding:15px;
+  margin-right: 20px;
+  margin-left: 55%;
+  margin-bottom: 3em;
+  /* margin:1em 0 3em; */
+  color: #fff;
+  //background:#075698; /* default background for browsers without gradient support */
+  /* css3 */
+  background: purple;
+  // background:-webkit-gradient(linear, 0 0, 0 100%, from(#2e88c4), to(#075698));
+  // background:-moz-linear-gradient(#2e88c4, #075698);
+  // background:-o-linear-gradient(#2e88c4, #075698);
+  // background:linear-gradient(#2e88c4, #075698);
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+}
+.triangle-left-purple:after {
+  content:"";
+
+  position:absolute;
+  bottom:-20px; /* value = - border-top-width - border-bottom-width */
+  right:50px; /* controls horizontal position */
+  border-width: 20px 20px 0 0;  /* vary these values to change the angle of the vertex */
+  border-style:solid;
+//  border-color:#075698 transparent;
+  border-color: purple transparent;
+  /* reduce the damage in FF3.0 */
+  display:block;
+  width:0;
+}
+
+.triangle-left-green {
+  position:relative;
+  padding:15px;
+  margin-right: 20px;
+  margin-left: 55%;
+  margin-bottom: 3em;
+  /* margin:1em 0 3em; */
+  color:#fff;
+  //background:#075698; /* default background for browsers without gradient support */
+  /* css3 */
+  background: green;
+  // background:-webkit-gradient(linear, 0 0, 0 100%, from(#2e88c4), to(#075698));
+  // background:-moz-linear-gradient(#2e88c4, #075698);
+  // background:-o-linear-gradient(#2e88c4, #075698);
+  // background:linear-gradient(#2e88c4, #075698);
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+}
+.triangle-left-green:after {
+  content:"";
+
+  position:absolute;
+  bottom:-20px; /* value = - border-top-width - border-bottom-width */
+  right:50px; /* controls horizontal position */
+  border-width: 20px 20px 0 0  ;  /* vary these values to change the angle of the vertex */
+  border-style:solid;
+//  border-color:#075698 transparent;
+  border-color: green transparent;
+  /* reduce the damage in FF3.0 */
+  display:block;
+  width:0;
+}
+
+.triangle-left-gray {
+  position:relative;
+  padding:15px;
+  margin-right: 20px;
+  margin-left: 55%;
+  margin-bottom: 3em;
+  /* margin:1em 0 3em; */
+  color: #fff;
+  //background:#075698; /* default background for browsers without gradient support */
+  /* css3 */
+  background: gray;
+  // background:-webkit-gradient(linear, 0 0, 0 100%, from(#2e88c4), to(#075698));
+  // background:-moz-linear-gradient(#2e88c4, #075698);
+  // background:-o-linear-gradient(#2e88c4, #075698);
+  // background:linear-gradient(#2e88c4, #075698);
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+}
+.triangle-left-gray:after {
+  content:"";
+
+  position:absolute;
+  bottom:-20px; /* value = - border-top-width - border-bottom-width */
+  right:50px; /* controls horizontal position */
+  border-width: 20px 20px 0 0; /* vary these values to change the angle of the vertex */
+  border-style:solid;
+//  border-color:#075698 transparent;
+  border-color: gray transparent;
+  /* reduce the damage in FF3.0 */
+  display:block;
+  width:0;
+}
+
+.triangle-left-red {
+  position:relative;
+  padding:15px;
+  margin-right: 20px;
+  margin-left: 55%;
+  margin-bottom: 3em;
+  /* margin:1em 0 3em; */
+  color:#fff;
+  //background:#075698; /* default background for browsers without gradient support */
+  /* css3 */
+  background: red;
+  // background:-webkit-gradient(linear, 0 0, 0 100%, from(#2e88c4), to(#075698));
+  // background:-moz-linear-gradient(#2e88c4, #075698);
+  // background:-o-linear-gradient(#2e88c4, #075698);
+  // background:linear-gradient(#2e88c4, #075698);
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+}
+.triangle-left-red:after {
+  content:"";
+
+  position:absolute;
+  bottom:-20px; /* value = - border-top-width - border-bottom-width */
+  right:50px; /* controls horizontal position */
+  border-width: 20px 20px 0 0;  /* vary these values to change the angle of the vertex */
+  border-style:solid;
+//  border-color:#075698 transparent;
+  border-color: red transparent;
+  /* reduce the damage in FF3.0 */
+  display:block;
+  width:0;
+}
+
+//////////////////////////////////////
+//////////////////////////////////////
+
 form {
   display: flex;
   flex: 1;
@@ -82,6 +430,7 @@ form {
   position: fixed;
   right: 0;
   top: 0;
+  z-index: 9999;
 }
 
 .navbar-brand {

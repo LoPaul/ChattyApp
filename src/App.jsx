@@ -9,8 +9,8 @@ class App extends Component {
     super(props);
     // this is the *only* time you should assign directly to state:
     this.state = {
+      loading: true,
       userCount: 1,
-      currentUser: {name: "Bob"},
       messages: [] };
     this.addMessage = this.addMessage.bind(this);
   }
@@ -28,7 +28,7 @@ class App extends Component {
       this.socketSend("postNotification", {currentUser: this.state.currentUser, content: `**${oldUsername}** changed their name to **${userName}**`});
     }
     if(message) {
-      const newMessage = {color: this.state.color, username: userName, content: message};
+      const newMessage = {color: this.state.color, user: this.state.currentUser, content: message};
       this.socketSend("postMessage", newMessage)
     }
   }
@@ -37,6 +37,7 @@ class App extends Component {
     var message = JSON.parse(data);
     if(message.type === "incomingUserSetup") {
       newState.currentUser = message.content;
+      newState.loading = false;
     }
     if(message.type === "incomingAllMessages") {
       newState.messages = message.content;
@@ -63,17 +64,19 @@ class App extends Component {
       }
     }
   }
-
   render() {
-      return (
+    if(this.state.loading)
+      return (<div><h1> Loading... </h1></div>)
+    else
+       return (
         <div>
           <NavBar userCount={this.state.userCount} />
           <div>
-            <MessageList messages={this.state.messages}/>
+            <MessageList messages={this.state.messages} currentUser={this.state.currentUser}/>
             <ChatBar addMessage={this.addMessage} currentUserName={this.state.currentUser.name}/>
           </div>
         </div>
-      );
+            );
   }
 }
 
