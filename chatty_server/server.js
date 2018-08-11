@@ -29,7 +29,7 @@ wss.on('connection', (ws) => {
 var colors = ["red", "gray", "green", "purple"];
 var messageHistory = [];
 var sessionUsers = [];
-function broadcastMessaeg(message) {
+function broadcastMessage(message) {
   wss.clients.forEach(function each(client) {
      if (client.readyState === WebSocket.OPEN)  {
        client.send(JSON.stringify(message));
@@ -47,12 +47,12 @@ function initialClientConnection(client) {
   client.send(JSON.stringify({type: "incomingUserSetup", content: {userID: userID, name: username}}));
   client.send(JSON.stringify({type: "incomingAllMessages", content: []}));
   client.send(JSON.stringify({type: "incomingDefaultColor", content: colors[wss.clients.size % colors.length]}));
-  broadcastMessaeg(connectionMessage);
+  broadcastMessage(connectionMessage);
   messageHistory.push(connectionMessage);
 }
 
 function broadcastConnectionCount() {
-  broadcastMessaeg({ type: "IncomingUserNotifiation", userCount: wss.clients.size});
+  broadcastMessage({ type: "IncomingUserNotifiation", userCount: wss.clients.size});
 }
 
 function usernameFor(client) {
