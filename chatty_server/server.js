@@ -34,7 +34,7 @@ function broadcastMessage(message) {
      if (client.readyState === WebSocket.OPEN)  {
        client.send(JSON.stringify(message));
      }
-   })
+   });
  }
 
 // Initialize client by sending data upon client socket connection
@@ -57,13 +57,13 @@ function broadcastConnectionCount() {
 
 function usernameFor(client) {
   const sessionUser = sessionUsers.find((sessionUser) => sessionUser.client === client);
-  return sessionUser ? sessionUser.name : "<Unknown User>"
+  return sessionUser ? sessionUser.name : "<Unknown User>";
 }
 
 // broadcast disconnect to other users
 function broadcastDisconnect(client) {
   // broadcast to client current user count / connections
-  console.log("broadcasting disconnect")
+  console.log("broadcasting disconnect");
   let username = usernameFor(client);
   var disconnectMessage = {id: generateRandomId(), type: "IncomingSessionTerminationNotification", content: `${username} has disconnected`};
   var userCountMessage = {type: "IncomingUserNotifiation", userCount: wss.clients.size};
@@ -73,7 +73,7 @@ function broadcastDisconnect(client) {
       aClient.send(JSON.stringify(disconnectMessage));
       aClient.send(JSON.stringify(userCountMessage));
     }
-  })
+  });
 }
 
 const WebSocket = require('ws');
@@ -96,7 +96,7 @@ function responseForIncomingMessage(msg) {
       if(sessionUser.userID === msg.currentUser.userID) {
         sessionUser.name = msg.currentUser.name
       }
-    } );
+    });
   msg.id = generateRandomId();
   if(msg.type === "postMessage")
     msg.type = "incomingMessage"

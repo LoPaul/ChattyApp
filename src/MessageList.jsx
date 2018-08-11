@@ -8,7 +8,8 @@ class MessageList extends Component {
       return (
         <main className="messages">
           {messageItems}
-        </main>);
+        </main>
+      );
   }
 }
 

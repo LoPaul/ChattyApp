@@ -8,22 +8,23 @@ class Message extends Component {
     if(messageType === "incomingMessage") {
       const isMyMessage = message.user.userID === this.props.currentUser.userID;
       const cssClassName = "triangle-" + (isMyMessage ? "right-" : "left-") + this.props.message.color;
-      var messageComp = 
-        (<div>
+      var messageComp = (
+        <div>
           <p className={cssClassName}>
           {this.props.message.content} <br/><br/>
           <em>{this.props.message.user.name}</em></p>
         </div>
-        )
-      }
+      );
+    }
     // display all notification here
     if(messageType === "incomingNotification" || 
         messageType === "IncomingSessionTerminationNotification" ||
         messageType === "IncomingSessionConnectionNotification") {
-      var notificationComp = 
-          (<div className="speech-bubble"  style={{textAlign: "center"}}>
-            <p className="notify-message">{this.props.message.content}</p>
-            </div>)
+      var notificationComp = ( 
+        <div className="speech-bubble"  style={{textAlign: "center"}}>
+          <p className="notify-message">{this.props.message.content}</p>
+        </div>
+      );
     }
     return (
       <div>

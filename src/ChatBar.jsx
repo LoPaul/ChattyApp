@@ -16,7 +16,7 @@ class ChatBar extends Component {
           <input style={{display: "none"}} type="submit" />
         </form>
       </footer>
-      );
+    );
   }
 }
 

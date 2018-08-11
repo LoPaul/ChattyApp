@@ -11,7 +11,7 @@ class App extends Component {
     this.state = {
       loading: true,
       userCount: 1,
-      messages: [] };
+      messages: []};
     this.addMessage = this.addMessage.bind(this);
   }
   // send message over socket given message type
@@ -56,7 +56,7 @@ class App extends Component {
       message.type === "IncomingSessionConnectionNotification")
       && (!this.state.messages.some(each => each.type === message.type && each.id === message.id))) {
         newState.messages = [...this.state.messages, message];
-      }
+    }
     this.setState(newState);
   }
   // after inital render, setup websocket and incoming message callback
@@ -80,7 +80,7 @@ class App extends Component {
             <ChatBar addMessage={this.addMessage} currentUserName={this.state.currentUser.name}/>
           </div>
         </div>
-            );
+      );
   }
 }
 
