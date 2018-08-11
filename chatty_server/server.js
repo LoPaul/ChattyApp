@@ -110,7 +110,7 @@ function responseForIncomingMessage(msg) {
 const generateRandomId = (alphabet => {
   const alphabetLength = alphabet.length;
   const randoIter = (key, n) => {
-    if (n === 0) {
+    if(n === 0) {
       return key;
     }
     const randoIndex = Math.floor(Math.random() * alphabetLength);
