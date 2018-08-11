@@ -4,6 +4,7 @@ class Message extends Component {
   render() {
     const message = this.props.message;
     const messageType = message.type;
+    // incoming messages will be splt by current user and other users (displayed either left/right)
     if(messageType === "incomingMessage") {
       const isMyMessage = message.user.userID === this.props.currentUser.userID;
       const cssClassName = "triangle-" + (isMyMessage ? "right-" : "left-") + this.props.message.color;
@@ -15,6 +16,7 @@ class Message extends Component {
         </div>
         )
       }
+    // display all notification here
     if(messageType === "incomingNotification" || 
         messageType === "IncomingSessionTerminationNotification" ||
         messageType === "IncomingSessionConnectionNotification") {

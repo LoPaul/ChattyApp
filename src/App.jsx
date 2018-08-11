@@ -14,10 +14,12 @@ class App extends Component {
       messages: [] };
     this.addMessage = this.addMessage.bind(this);
   }
+  // send message over socket given message type
   socketSend(notificationType, jsonMsg) {
     jsonMsg.type = notificationType;
     this.socket.send(JSON.stringify(jsonMsg))
   }
+  // messages added by current user
   addMessage(userName, message) {
     const newState = this.state;
     var oldUsername = this.state.currentUser.name;
@@ -32,6 +34,7 @@ class App extends Component {
       this.socketSend("postMessage", newMessage)
     }
   }
+  // all messages from server processed here by type
   processIncomingMessage(data) {
     var newState = this.state;
     var message = JSON.parse(data);
@@ -56,6 +59,7 @@ class App extends Component {
       }
     this.setState(newState);
   }
+  // after inital render, setup websocket and incoming message callback
   componentDidMount() {
     this.socket = new WebSocket("ws://127.0.0.1:3001")
     this.socket.onopen = (ev) => {
