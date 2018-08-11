@@ -6,13 +6,21 @@ ChattyApp allows users to communicate with each other without having to register
 
 ## Getting Started 
 - Install all depdencies by 
-      'npm install'
+```sh
+      npm install
+```
 - Install chatty_server by 
-      'cd chatty_server && npm install'
+```sh
+      cd chatty_server && npm install
+```
 - Run the webpack dev server by 
-      'npm start'
+```sh
+      npm start
+```
 - From another terminal, run the websocket server by
-      'cd chatty_server && npm start'
+```sh
+      cd chatty_server && npm start
+```
 - open http://localhost:3000 in your browser
 
 ## Final Product
