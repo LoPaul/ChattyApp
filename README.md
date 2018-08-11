@@ -15,7 +15,7 @@ registration.
 - open http://localhost:3000 in your browser
 
 ## Final Product
-![Main Screen](https://github.com/LoPaul/ChattyApp/docs/ChattyApp.gif)
+![Main Screen](https://github.com/LoPaul/ChattyApp/tree/master/docs/ChattyApp.gif)
 
 ### Dependencies
 
